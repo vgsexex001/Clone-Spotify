@@ -141,7 +141,7 @@ function PlayButton({ size = 48, className = '', onClick }) {
       className={`flex items-center justify-center rounded-full bg-sp-green hover:bg-sp-green-light hover:scale-105 transition-all shadow-lg shadow-black/40 cursor-pointer ${className}`}
       style={{ width: size, height: size }}
     >
-      <Play className="text-black fill-black" style={{ width: size * 0.4, height: size * 0.4, marginLeft: size * 0.05 }} />
+      <Play className="text-black fill-black" style={{ width: size * 0.4, height: size * 0.4, marginLeft: size * 0.08 }} />
     </button>
   );
 }
@@ -453,7 +453,7 @@ function PlayerBar({
           >
             {isPlaying
               ? <Pause size={18} className="text-black fill-black" />
-              : <Play size={18} className="text-black fill-black ml-0.5" />
+              : <Play size={18} className="text-black fill-black ml-[3px]" />
             }
           </button>
           <button className="text-sp-text-sub hover:text-white transition cursor-pointer">
