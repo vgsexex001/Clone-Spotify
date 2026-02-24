@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Home, Search, Library, Plus, ChevronLeft, ChevronRight,
-  Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Repeat1,
+  Pause, SkipBack, SkipForward, Shuffle, Repeat, Repeat1,
   Heart, Mic2, ListMusic, MonitorSpeaker, Volume2, Volume1, VolumeX,
   Maximize2, ExternalLink, X
 } from 'lucide-react';
@@ -135,13 +135,23 @@ function ProgressBar({ value, max, onChange, className = '' }) {
 // ─── PlayButton ────────────────────────────────────────────────
 
 function PlayButton({ size = 48, className = '', onClick }) {
+  const tri = size * 0.36;
   return (
     <button
       onClick={onClick}
       className={`flex items-center justify-center rounded-full bg-sp-green hover:bg-sp-green-light hover:scale-105 transition-all shadow-lg shadow-black/40 cursor-pointer ${className}`}
       style={{ width: size, height: size }}
     >
-      <Play className="text-black fill-black" style={{ width: size * 0.4, height: size * 0.4, marginLeft: size * 0.08 }} />
+      <div
+        style={{
+          width: 0,
+          height: 0,
+          borderTop: `${tri / 2}px solid transparent`,
+          borderBottom: `${tri / 2}px solid transparent`,
+          borderLeft: `${tri}px solid #000`,
+          marginLeft: size * 0.06,
+        }}
+      />
     </button>
   );
 }
@@ -452,8 +462,8 @@ function PlayerBar({
             className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:scale-105 transition-transform cursor-pointer"
           >
             {isPlaying
-              ? <Pause size={18} className="text-black fill-black" />
-              : <Play size={18} className="text-black fill-black ml-[3px]" />
+              ? <Pause size={16} className="text-black fill-black" />
+              : <div style={{ width: 0, height: 0, borderTop: '7px solid transparent', borderBottom: '7px solid transparent', borderLeft: '12px solid #000', marginLeft: 2 }} />
             }
           </button>
           <button className="text-sp-text-sub hover:text-white transition cursor-pointer">
