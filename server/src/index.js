@@ -11,7 +11,13 @@ import userRoutes from './routes/user.js';
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (curl, mobile apps, server-to-server)
+    if (!origin) return callback(null, true);
+    // Allow any localhost origin
+    if (origin.startsWith('http://localhost:')) return callback(null, true);
+    callback(null, false);
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -26,6 +32,12 @@ app.use('/api/v1/user', userRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 app.listen(config.port, () => {
