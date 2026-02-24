@@ -428,8 +428,9 @@ function PlayerBar({
   const VolumeIcon = volume === 0 ? VolumeX : volume < 50 ? Volume1 : Volume2;
 
   return (
-    <div className="h-[72px] bg-black flex items-center px-4 gap-4 select-none">
-      <div className="flex items-center gap-3 w-[280px] min-w-[200px]">
+    <div className="h-[72px] bg-black grid grid-cols-3 items-center px-4 gap-2 select-none">
+      {/* Left: Now Playing */}
+      <div className="flex items-center gap-3 min-w-0">
         <div className="w-14 h-14 rounded shrink-0 overflow-hidden">
           <img src={NOW_PLAYING.albumImage} alt={NOW_PLAYING.album} className="w-full h-full object-cover" />
         </div>
@@ -445,7 +446,8 @@ function PlayerBar({
         </button>
       </div>
 
-      <div className="flex flex-col items-center flex-1 max-w-[600px]">
+      {/* Center: Controls */}
+      <div className="flex flex-col items-center">
         <div className="flex items-center gap-4 mb-1">
           <button
             onClick={onToggleShuffle}
@@ -477,14 +479,15 @@ function PlayerBar({
             {repeatMode !== 'off' && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-sp-green rounded-full" />}
           </button>
         </div>
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2 w-full max-w-[600px]">
           <span className="text-[11px] text-sp-text-sub w-10 text-right tabular-nums">{formatTime(progress)}</span>
           <ProgressBar value={progress} max={duration} onChange={onProgressChange} className="flex-1" />
           <span className="text-[11px] text-sp-text-sub w-10 tabular-nums">{formatTime(duration)}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 w-[280px] min-w-[200px] justify-end">
+      {/* Right: Volume & extras */}
+      <div className="flex items-center gap-3 justify-end min-w-0">
         <button className="text-sp-text-sub hover:text-white transition cursor-pointer">
           <Mic2 size={16} />
         </button>
