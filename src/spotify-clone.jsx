@@ -190,7 +190,7 @@ function TopBar({ activeTab, onTabChange }) {
   const tabs = ['Tudo', 'Música', 'Podcasts'];
 
   return (
-    <div className="flex items-center justify-between px-4 pt-4 pb-2 sticky top-0 z-10 bg-sp-base">
+    <div className="flex items-center justify-between px-6 pt-4 pb-2 sticky top-0 z-10 bg-sp-base">
       <div className="flex items-center gap-2">
         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition cursor-pointer">
           <ChevronLeft size={18} />
@@ -230,7 +230,7 @@ function TopBar({ activeTab, onTabChange }) {
 
 function QuickAccessGrid({ isCompact, onPlay }) {
   return (
-    <div className="px-4 pt-2 pb-2">
+    <div className="px-6 pt-2 pb-2">
       <div className={`grid gap-2 ${isCompact ? 'grid-cols-2' : 'grid-cols-4'}`}>
         {QUICK_ACCESS.map((item) => (
           <button
@@ -258,7 +258,7 @@ function QuickAccessGrid({ isCompact, onPlay }) {
 
 function FeaturedSection({ onPlay }) {
   return (
-    <div className="px-4 py-3">
+    <div className="px-6 py-3">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-bold text-white hover:underline cursor-pointer">Escolhido para você</h2>
         <button className="text-sm font-semibold text-sp-text-sub hover:text-white transition-colors cursor-pointer">
@@ -282,80 +282,50 @@ function FeaturedSection({ onPlay }) {
   );
 }
 
-// ─── SectionRow ────────────────────────────────────────────────
+// ─── ScrollSection ─────────────────────────────────────────────
 
-function SectionRow({ title, items, onPlay }) {
+function ScrollSection({ title, children }) {
   return (
-    <div className="px-4 py-3">
-      <div className="flex items-center justify-between mb-3">
+    <section className="mb-2">
+      <div className="flex items-center justify-between mb-3 px-6">
         <h2 className="text-xl font-bold text-white hover:underline cursor-pointer">{title}</h2>
         <button className="text-sm font-semibold text-sp-text-sub hover:text-white transition-colors cursor-pointer">
           Mostrar tudo
         </button>
       </div>
-      <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="group flex flex-col bg-sp-surface hover:bg-sp-elevated rounded-lg p-3 transition-colors cursor-pointer shrink-0"
-            style={{ width: 170 }}
-          >
-            <div className="relative mb-3">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full aspect-square object-cover rounded-md shadow-lg shadow-black/40"
-              />
-              <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                <PlayButton size={44} onClick={onPlay} />
-              </div>
-            </div>
-            <span className="text-sm font-semibold text-white truncate">{item.name}</span>
-            <span className="text-xs text-sp-text-sub mt-1 line-clamp-2 leading-relaxed">{item.desc}</span>
-          </div>
-        ))}
+      <div
+        className="flex gap-4 overflow-x-auto px-6 pb-4"
+        style={{ scrollbarWidth: 'none' }}
+      >
+        {children}
       </div>
-    </div>
+    </section>
   );
 }
 
-// ─── RecentlyPlayed ────────────────────────────────────────────
+// ─── MediaCard ─────────────────────────────────────────────────
 
-function RecentlyPlayed({ onPlay }) {
+function MediaCard({ image, name, desc, circular = false, onPlay }) {
   return (
-    <div className="px-4 py-3">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-bold text-white hover:underline cursor-pointer">Tocados recentemente</h2>
-        <button className="text-sm font-semibold text-sp-text-sub hover:text-white transition-colors cursor-pointer">
-          Mostrar tudo
-        </button>
+    <div
+      className="group flex flex-col bg-sp-surface hover:bg-sp-elevated rounded-lg p-3 transition-colors cursor-pointer shrink-0 w-[164px]"
+    >
+      <div className="relative mb-3">
+        <img
+          src={image}
+          alt={name}
+          className={`shadow-lg shadow-black/40 object-cover ${
+            circular
+              ? 'w-[140px] h-[140px] rounded-full mx-auto'
+              : 'w-full aspect-square rounded-md'
+          }`}
+        />
+        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+          <PlayButton size={44} onClick={onPlay} />
+        </div>
       </div>
-      <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-        {RECENTLY_PLAYED.map((item) => (
-          <div
-            key={item.id}
-            className="group flex flex-col items-center bg-sp-surface hover:bg-sp-elevated rounded-lg p-3 transition-colors cursor-pointer shrink-0"
-            style={{ width: 170 }}
-          >
-            <div className="relative mb-3 w-full flex justify-center">
-              <img
-                src={item.image}
-                alt={item.name}
-                className={`shadow-lg shadow-black/40 object-cover ${
-                  item.circular
-                    ? 'w-[140px] h-[140px] rounded-full'
-                    : 'w-full aspect-square rounded-md'
-                }`}
-              />
-              <div className={`absolute bottom-2 ${item.circular ? 'right-4' : 'right-2'} opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300`}>
-                <PlayButton size={44} onClick={onPlay} />
-              </div>
-            </div>
-            <span className="text-sm font-semibold text-white truncate w-full text-center">{item.name}</span>
-            <span className="text-xs text-sp-text-sub mt-0.5">{item.subtitle}</span>
-          </div>
-        ))}
-      </div>
+      <span className={`text-sm font-semibold text-white truncate ${circular ? 'text-center' : ''}`}>{name}</span>
+      {desc && <span className="text-xs text-sp-text-sub mt-1 line-clamp-2 leading-relaxed">{desc}</span>}
     </div>
   );
 }
@@ -586,8 +556,16 @@ export default function SpotifyClone() {
           <TopBar activeTab={activeTab} onTabChange={setActiveTab} />
           <QuickAccessGrid isCompact={isCompact} onPlay={() => setIsPlaying(true)} />
           <FeaturedSection onPlay={() => setIsPlaying(true)} />
-          <SectionRow title="Feito para você" items={MADE_FOR_YOU} onPlay={() => setIsPlaying(true)} />
-          <RecentlyPlayed onPlay={() => setIsPlaying(true)} />
+          <ScrollSection title="Feito para você">
+            {MADE_FOR_YOU.map((item) => (
+              <MediaCard key={item.id} image={item.image} name={item.name} desc={item.desc} onPlay={() => setIsPlaying(true)} />
+            ))}
+          </ScrollSection>
+          <ScrollSection title="Tocados recentemente">
+            {RECENTLY_PLAYED.map((item) => (
+              <MediaCard key={item.id} image={item.image} name={item.name} desc={item.subtitle} circular={item.circular} onPlay={() => setIsPlaying(true)} />
+            ))}
+          </ScrollSection>
           <div className="h-8" />
         </main>
 
